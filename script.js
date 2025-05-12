@@ -29,10 +29,20 @@ const commands = {
 - progress    → check your quest progress
 - clear       → clear the terminal`,
 
-  about: `I'm Baptiste Allain, a data enthusiast currently studying at EURECOM.
-EURECOM, MSc in Data Science & Artificial Intelligence, expected 2026
-Passionate about AI, data storytelling, and building smart tools.
-Always curious, always learning. 🚀`,
+  about: `Hey there! 👋 I'm Baptiste Allain
+
+🚀 First and foremost, I'm passionate about entrepreneurship and building products that solve real problems.
+
+🔍 Currently in my first year at EURECOM, where I'm learning the foundations of Data Science.
+📊 Next year, I'll be specializing in database systems - a strategic choice to better understand how data drives business decisions.
+
+💡 What drives me? Finding product-market fit, optimizing business processes, and developing strategies that help companies grow.
+
+🛠️ I see technology as a tool to achieve business goals, not just for its own sake. I love the challenge of turning ideas into viable products and testing them in the real market.
+
+🌱 My background combines business thinking with technical skills - a mix I believe is essential for today's entrepreneurial landscape.
+
+👉 Check out my projects with the "projects" command!`,
 
   projects: `1. 🧠 Predictive model for student performance (Python, Scikit-Learn)
 2. 📊 Dashboard Airbnb prices (Python + Tableau)
@@ -68,11 +78,6 @@ Fine-tuned on custom dataset.`,
 - [quest 2] Watch my video
 - [quest 3] Find the secret command
 Type 'progress' to see your completion status.`,
-
-  progress: `Progress:
-${quests.projectViewed ? "✅" : "❌"} Quest 1 - Project viewed
-${quests.videoWatched ? "✅" : "❌"} Quest 2 - Video watched
-${quests.easterEggFound ? "✅" : "❌"} Quest 3 - Secret found`,
 
   "sudo hire-me": `💼 Hiring protocol initiated...
 🎯 You've unlocked the secret command.
@@ -195,4 +200,12 @@ async function bootTerminal() {
 
   input.disabled = false;
   input.focus();
+}
+
+// Fonction pour générer le texte de progression à la demande
+function getProgressText() {
+  return `Progress:
+${quests.projectViewed ? "✅" : "❌"} Quest 1 - Project viewed
+${quests.videoWatched ? "✅" : "❌"} Quest 2 - Video watched
+${quests.easterEggFound ? "✅" : "❌"} Quest 3 - Secret found`;
 }
