@@ -31,8 +31,8 @@ Built a Tableau dashboard to visualize price clusters.`,
 Created a chatbot using Transformers (Hugging Face).
 Fine-tuned on custom dataset.`,
 
-cv: `📄 Downloading CV...
-<a href="assets/cv.pdf" target="_blank">👉 Click here to open my CV</a>`
+  cv: `📄 Downloading CV...
+<a href="assets/cv.pdf" target="_blank">👉 Click here to open my CV</a>`,
 
   contact: `📧 Email: baptiste.allainpr@proton.me
 🔗 LinkedIn: https://www.linkedin.com/in/allain-baptiste/
@@ -55,9 +55,8 @@ function handleCommand(cmd) {
   if (commands[command]) {
     appendOutput(commands[command]);
     if (command === "cv") {
-        window.open("assets/cv.pdf", "_blank");
-      }
-      
+      window.open("assets/cv.pdf", "_blank");
+    }
   } else {
     appendOutput(`Command not found: ${command}
 Type 'help' to see available commands.`);
@@ -73,41 +72,39 @@ input.addEventListener("keydown", function (e) {
 
 window.onload = bootTerminal;
 
-
 async function typeLine(line, delay = 30) {
-    return new Promise(resolve => {
-      let i = 0;
-      const interval = setInterval(() => {
-        output.innerHTML += line[i];
-        output.scrollTop = output.scrollHeight;
-        i++;
-        if (i >= line.length) {
-          clearInterval(interval);
-          output.innerHTML += '\n';
-          resolve();
-        }
-      }, delay);
-    });
+  return new Promise((resolve) => {
+    let i = 0;
+    const interval = setInterval(() => {
+      output.innerHTML += line[i];
+      output.scrollTop = output.scrollHeight;
+      i++;
+      if (i >= line.length) {
+        clearInterval(interval);
+        output.innerHTML += "\n";
+        resolve();
+      }
+    }, delay);
+  });
+}
+
+async function bootTerminal() {
+  input.disabled = true;
+
+  const lines = [
+    "booting terminal...",
+    "loading AI modules...",
+    "establishing secure connection...",
+    "ready.",
+    "👋 Welcome to the terminal of Baptiste Delvaux",
+    "Type 'help' to see available commands.",
+  ];
+
+  for (const line of lines) {
+    await typeLine(line);
+    await new Promise((r) => setTimeout(r, 300));
   }
-  
-  async function bootTerminal() {
-    input.disabled = true;
-  
-    const lines = [
-      'booting terminal...',
-      'loading AI modules...',
-      'establishing secure connection...',
-      'ready.',
-      '👋 Welcome to the terminal of Baptiste Delvaux',
-      "Type 'help' to see available commands."
-    ];
-  
-    for (const line of lines) {
-      await typeLine(line);
-      await new Promise(r => setTimeout(r, 300));
-    }
-  
-    input.disabled = false;
-    input.focus();
-  }
-  
+
+  input.disabled = false;
+  input.focus();
+}
