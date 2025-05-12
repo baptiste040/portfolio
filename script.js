@@ -93,23 +93,28 @@ function handleCommand(cmd) {
     return;
   }
 
+  // Traitement spécial pour certaines commandes
+  if (command === "projects") {
+    appendOutput(commands[command]);
+    quests.projectViewed = true;
+    saveProgress();
+    appendOutput("💡 Hint unlocked: The secret command starts with 'sudo'");
+    return;
+  }
+
+  if (command === "about") {
+    appendOutput(commands[command]);
+    quests.videoWatched = true;
+    saveProgress();
+    appendOutput(
+      "💡 Hint unlocked: It's something you'd want to say to a recruiter..."
+    );
+    return;
+  }
+
+  // Traitement normal pour les autres commandes
   if (commands[command]) {
     appendOutput(commands[command]);
-
-    // Quests auto-tracking
-    if (command === "projects") {
-      quests.projectViewed = true;
-      saveProgress();
-      appendOutput("💡 Hint unlocked: The secret command starts with 'sudo'");
-    }
-
-    if (command === "about") {
-      quests.videoWatched = true;
-      saveProgress();
-      appendOutput(
-        "💡 Hint unlocked: It's something you'd want to say to a recruiter..."
-      );
-    }
 
     if (command === "cv") {
       window.open("assets/cv.pdf", "_blank");
@@ -134,8 +139,6 @@ function handleCommand(cmd) {
       setTimeout(() => {
         document.getElementById("terminal").classList.remove("glitch");
       }, 400);
-
-      appendOutput(commands[command]);
 
       // Optional: open CV automatically
       setTimeout(() => {
