@@ -17,9 +17,29 @@ const quests = {
   easterEggFound: false,
 };
 
+function resetProgress() {
+  quests.projectViewed = false;
+  quests.videoWatched = false;
+  quests.easterEggFound = false;
+  localStorage.removeItem("quests");
+}
+
 function loadProgress() {
   const saved = localStorage.getItem("quests");
-  if (saved) Object.assign(quests, JSON.parse(saved));
+  if (saved) {
+    try {
+      const parsedQuests = JSON.parse(saved);
+      // Vérifier que les données sont valides
+      if (typeof parsedQuests === "object" && parsedQuests !== null) {
+        Object.assign(quests, parsedQuests);
+      } else {
+        resetProgress();
+      }
+    } catch (e) {
+      // En cas d'erreur de parsing, réinitialiser les quêtes
+      resetProgress();
+    }
+  }
 }
 
 function saveProgress() {
@@ -96,6 +116,11 @@ Type 'progress' to see your completion status.`,
   "sudo hire-me": `💼 Hiring protocol initiated...
 🎯 You've unlocked the secret command.
 Congratulations, you've just recruited a motivated badass.`,
+
+  "sudo reset": function () {
+    resetProgress();
+    return "🔄 Progress has been reset. All quests are now locked again.";
+  },
 };
 
 const secretCommands = {
@@ -140,10 +165,9 @@ function handleCommand(cmd) {
 
   if (command === "about") {
     appendOutput(commands[command]);
-    quests.videoWatched = true;
-    saveProgress();
+    // Ne pas affecter la quête videoWatched ici
     appendOutput(
-      "💡 Hint unlocked: It's something you'd want to say to a recruiter..."
+      "💡 Hint: Try watching the video presentation to unlock more hints!"
     );
     return;
   }
@@ -191,6 +215,12 @@ function handleCommand(cmd) {
     if (command === "video") {
       quests.videoWatched = true;
       saveProgress();
+      // Ajouter un indice après avoir regardé la vidéo
+      setTimeout(() => {
+        appendOutput(
+          "💡 Hint unlocked: It's something you'd want to say to a recruiter..."
+        );
+      }, 1000);
     }
 
     if (command === "sudo hire-me") {
@@ -229,6 +259,10 @@ input.addEventListener("keydown", function (e) {
 });
 
 window.onload = function () {
+  // Décommentez la ligne suivante pour forcer une réinitialisation des quêtes
+  // resetProgress();
+
+  loadProgress();
   initParticles();
   bootTerminal();
 };
@@ -365,10 +399,18 @@ async function bootTerminal() {
     "establishing secure connection...",
     "ready.",
     "👋 Welcome to the terminal of Baptiste Allain",
-    quests.easterEggFound
-      ? "Type 'help' to see available commands, or 'secrets' to access unlocked content 🔓"
-      : "Type 'help' to see available commands, or 'quests' for a challenge 🕹️",
   ];
+
+  // Ajouter le message approprié en fonction de l'état des quêtes
+  if (quests.easterEggFound) {
+    lines.push(
+      "Type 'help' to see available commands, or 'secrets' to access unlocked content 🔓"
+    );
+  } else {
+    lines.push(
+      "Type 'help' to see available commands, or 'quests' for a challenge 🕹️"
+    );
+  }
 
   for (const line of lines) {
     await typeLine(line);
