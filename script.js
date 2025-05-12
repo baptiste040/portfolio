@@ -84,6 +84,23 @@ Type 'progress' to see your completion status.`,
 Congratulations, you've just recruited a motivated badass.`,
 };
 
+const secretCommands = {
+  secrets: `🔓 Secret commands unlocked:
+- athlete    → check my athletics profile
+- music      → discover my favorite song
+- movie      → find out my favorite movie/actor`,
+
+  athlete: `🏃‍♂️ My athletics profile:
+<a href="https://bases.athle.fr/asp.net/athletes.aspx?base=records&seq=50495049445551484752445544555148" target="_blank">👉 Click here to see my athletics records</a>`,
+
+  music: `🎵 My favorite song:
+<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">👉 Click here to listen</a>`,
+
+  movie: `🎬 My favorite movie:
+Inception - I love how it blends mind-bending concepts with emotional storytelling.
+Favorite actor: Leonardo DiCaprio - His performances in Inception and The Departed are outstanding.`,
+};
+
 function appendOutput(text) {
   output.innerHTML += `\n${text}`;
   output.scrollTop = output.scrollHeight;
@@ -117,6 +134,34 @@ function handleCommand(cmd) {
     return;
   }
 
+  // Traitement spécial pour la commande progress
+  if (command === "progress") {
+    appendOutput(getProgressText());
+    return;
+  }
+
+  // Traitement spécial pour les commandes secrètes
+  if (command === "secrets") {
+    if (quests.easterEggFound) {
+      appendOutput(secretCommands[command]);
+    } else {
+      appendOutput(
+        "🔒 Secrets are locked. Complete all quests to access them."
+      );
+    }
+    return;
+  }
+
+  // Vérifier si c'est une commande secrète et si l'utilisateur a débloqué les secrets
+  if (secretCommands[command]) {
+    if (quests.easterEggFound) {
+      appendOutput(secretCommands[command]);
+    } else {
+      appendOutput("🔒 This command is locked. Find the secret command first!");
+    }
+    return;
+  }
+
   // Traitement normal pour les autres commandes
   if (commands[command]) {
     appendOutput(commands[command]);
@@ -145,10 +190,12 @@ function handleCommand(cmd) {
         document.getElementById("terminal").classList.remove("glitch");
       }, 400);
 
-      // Optional: open CV automatically
+      // Notification de déblocage des secrets
       setTimeout(() => {
-        window.open("assets/cv.pdf", "_blank");
-      }, 1000);
+        appendOutput(
+          "🔓 SECRET LEVEL UNLOCKED! Type 'secrets' to discover hidden commands."
+        );
+      }, 1500);
     }
   } else {
     appendOutput(`Command not found: ${command}
@@ -190,7 +237,9 @@ async function bootTerminal() {
     "establishing secure connection...",
     "ready.",
     "👋 Welcome to the terminal of Baptiste Allain",
-    "Type 'help' to see available commands, or 'quests' for a challenge 🕹️",
+    quests.easterEggFound
+      ? "Type 'help' to see available commands, or 'secrets' to access unlocked content 🔓"
+      : "Type 'help' to see available commands, or 'quests' for a challenge 🕹️",
   ];
 
   for (const line of lines) {
@@ -202,10 +251,11 @@ async function bootTerminal() {
   input.focus();
 }
 
-// Fonction pour générer le texte de progression à la demande
 function getProgressText() {
   return `Progress:
 ${quests.projectViewed ? "✅" : "❌"} Quest 1 - Project viewed
 ${quests.videoWatched ? "✅" : "❌"} Quest 2 - Video watched
-${quests.easterEggFound ? "✅" : "❌"} Quest 3 - Secret found`;
+${quests.easterEggFound ? "✅" : "❌"} Quest 3 - Secret found${
+    quests.easterEggFound ? " (secrets unlocked!)" : ""
+  }`;
 }
