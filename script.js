@@ -100,11 +100,15 @@ function handleCommand(cmd) {
     if (command === "projects") {
       quests.projectViewed = true;
       saveProgress();
+      appendOutput("💡 Hint unlocked: The secret command starts with 'sudo'");
     }
 
     if (command === "about") {
       quests.videoWatched = true;
       saveProgress();
+      appendOutput(
+        "💡 Hint unlocked: It's something you'd want to say to a recruiter..."
+      );
     }
 
     if (command === "cv") {
@@ -124,6 +128,19 @@ function handleCommand(cmd) {
     if (command === "sudo hire-me") {
       quests.easterEggFound = true;
       saveProgress();
+
+      // Add glitch effect
+      document.getElementById("terminal").classList.add("glitch");
+      setTimeout(() => {
+        document.getElementById("terminal").classList.remove("glitch");
+      }, 400);
+
+      appendOutput(commands[command]);
+
+      // Optional: open CV automatically
+      setTimeout(() => {
+        window.open("assets/cv.pdf", "_blank");
+      }, 1000);
     }
   } else {
     appendOutput(`Command not found: ${command}
