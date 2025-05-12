@@ -71,7 +71,43 @@ input.addEventListener("keydown", function (e) {
   }
 });
 
-window.onload = () => {
-  appendOutput("👋 Welcome to the terminal of [Ton Nom]");
-  appendOutput("Type 'help' to see available commands.");
-};
+window.onload = bootTerminal;
+
+
+async function typeLine(line, delay = 30) {
+    return new Promise(resolve => {
+      let i = 0;
+      const interval = setInterval(() => {
+        output.innerHTML += line[i];
+        output.scrollTop = output.scrollHeight;
+        i++;
+        if (i >= line.length) {
+          clearInterval(interval);
+          output.innerHTML += '\n';
+          resolve();
+        }
+      }, delay);
+    });
+  }
+  
+  async function bootTerminal() {
+    input.disabled = true;
+  
+    const lines = [
+      'booting terminal...',
+      'loading AI modules...',
+      'establishing secure connection...',
+      'ready.',
+      '👋 Welcome to the terminal of Baptiste Delvaux',
+      "Type 'help' to see available commands."
+    ];
+  
+    for (const line of lines) {
+      await typeLine(line);
+      await new Promise(r => setTimeout(r, 300));
+    }
+  
+    input.disabled = false;
+    input.focus();
+  }
+  
