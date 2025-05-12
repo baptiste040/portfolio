@@ -1,5 +1,15 @@
 const output = document.getElementById("output");
 const input = document.getElementById("commandInput");
+const cursor = document.querySelector(".cursor");
+
+// Hide cursor when typing
+input.addEventListener("focus", () => {
+  cursor.style.display = "none";
+});
+
+input.addEventListener("blur", () => {
+  cursor.style.display = "inline-block";
+});
 
 const quests = {
   projectViewed: false,
@@ -79,6 +89,10 @@ Fine-tuned on custom dataset.`,
 - [quest 3] Find the secret command
 Type 'progress' to see your completion status.`,
 
+  progress: function () {
+    return getProgressText();
+  },
+
   "sudo hire-me": `💼 Hiring protocol initiated...
 🎯 You've unlocked the secret command.
 Congratulations, you've just recruited a motivated badass.`,
@@ -134,12 +148,6 @@ function handleCommand(cmd) {
     return;
   }
 
-  // Traitement spécial pour la commande progress
-  if (command === "progress") {
-    appendOutput(getProgressText());
-    return;
-  }
-
   // Traitement spécial pour les commandes secrètes
   if (command === "secrets") {
     if (quests.easterEggFound) {
@@ -164,10 +172,15 @@ function handleCommand(cmd) {
 
   // Traitement normal pour les autres commandes
   if (commands[command]) {
-    appendOutput(commands[command]);
+    // Check if the command is a function
+    if (typeof commands[command] === "function") {
+      appendOutput(commands[command]());
+    } else {
+      appendOutput(commands[command]);
+    }
 
     if (command === "cv") {
-      window.open("assets/cv.pdf", "_blank");
+      // No longer auto-opening the CV
     }
 
     if (command.startsWith("project")) {
@@ -184,10 +197,15 @@ function handleCommand(cmd) {
       quests.easterEggFound = true;
       saveProgress();
 
-      // Add glitch effect
-      document.getElementById("terminal").classList.add("glitch");
+      // Enhanced glitch effect
+      const terminal = document.getElementById("terminal");
+      terminal.classList.add("glitch");
+
+      // Flash effect
+      document.body.style.backgroundColor = "#fff";
       setTimeout(() => {
-        document.getElementById("terminal").classList.remove("glitch");
+        document.body.style.backgroundColor = "";
+        terminal.classList.remove("glitch");
       }, 400);
 
       // Notification de déblocage des secrets
@@ -210,7 +228,116 @@ input.addEventListener("keydown", function (e) {
   }
 });
 
-window.onload = bootTerminal;
+window.onload = function () {
+  initParticles();
+  bootTerminal();
+};
+
+// Initialize particles.js
+function initParticles() {
+  particlesJS("particles-js", {
+    particles: {
+      number: {
+        value: 50,
+        density: {
+          enable: true,
+          value_area: 800,
+        },
+      },
+      color: {
+        value: "#00ff88",
+      },
+      shape: {
+        type: "circle",
+        stroke: {
+          width: 0,
+          color: "#000000",
+        },
+      },
+      opacity: {
+        value: 0.5,
+        random: true,
+        anim: {
+          enable: true,
+          speed: 1,
+          opacity_min: 0.1,
+          sync: false,
+        },
+      },
+      size: {
+        value: 3,
+        random: true,
+        anim: {
+          enable: true,
+          speed: 2,
+          size_min: 0.1,
+          sync: false,
+        },
+      },
+      line_linked: {
+        enable: true,
+        distance: 150,
+        color: "#00ff88",
+        opacity: 0.4,
+        width: 1,
+      },
+      move: {
+        enable: true,
+        speed: 1,
+        direction: "none",
+        random: true,
+        straight: false,
+        out_mode: "out",
+        bounce: false,
+        attract: {
+          enable: false,
+          rotateX: 600,
+          rotateY: 1200,
+        },
+      },
+    },
+    interactivity: {
+      detect_on: "canvas",
+      events: {
+        onhover: {
+          enable: true,
+          mode: "grab",
+        },
+        onclick: {
+          enable: true,
+          mode: "push",
+        },
+        resize: true,
+      },
+      modes: {
+        grab: {
+          distance: 140,
+          line_linked: {
+            opacity: 1,
+          },
+        },
+        bubble: {
+          distance: 400,
+          size: 40,
+          duration: 2,
+          opacity: 8,
+          speed: 3,
+        },
+        repulse: {
+          distance: 200,
+          duration: 0.4,
+        },
+        push: {
+          particles_nb: 4,
+        },
+        remove: {
+          particles_nb: 2,
+        },
+      },
+    },
+    retina_detect: true,
+  });
+}
 
 async function typeLine(line, delay = 30) {
   return new Promise((resolve) => {
@@ -230,6 +357,7 @@ async function typeLine(line, delay = 30) {
 
 async function bootTerminal() {
   input.disabled = true;
+  cursor.style.display = "none";
 
   const lines = [
     "booting terminal...",
@@ -249,6 +377,7 @@ async function bootTerminal() {
 
   input.disabled = false;
   input.focus();
+  cursor.style.display = "inline-block";
 }
 
 function getProgressText() {

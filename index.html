@@ -2,17 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Baptiste Allain - Terminal Portfolio</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div id="particles-js"></div>
     <div id="terminal">
       <div id="output"></div>
       <div class="input-line">
         <span class="prompt">></span>
         <input type="text" id="commandInput" autofocus />
+        <span class="cursor"></span>
       </div>
     </div>
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
