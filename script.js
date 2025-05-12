@@ -9,7 +9,7 @@ const commands = {
 - contact     → get in touch
 - clear       → clear the terminal`,
 
-  about: `I'm [Ton prénom], a data enthusiast currently studying at [École].
+  about: `I'm Baptiste, a data enthusiast currently studying at EURECOM.EURECOM, MSc in Data Science & Artificial Intelligence, expected 2026
 Passionate about AI, data storytelling, and building smart tools.
 Always curious, always learning. 🚀`,
 
@@ -31,12 +31,12 @@ Built a Tableau dashboard to visualize price clusters.`,
 Created a chatbot using Transformers (Hugging Face).
 Fine-tuned on custom dataset.`,
 
-  cv: `📄 Downloading CV...
-[Click here](assets/cv.pdf) if it doesn't open automatically.`,
+cv: `📄 Downloading CV...
+<a href="assets/cv.pdf" target="_blank">👉 Click here to open my CV</a>`
 
-  contact: `📧 Email: prenom.nom@email.com
-🔗 LinkedIn: linkedin.com/in/tonprofil
-🐙 GitHub: github.com/tonpseudo`,
+  contact: `📧 Email: baptiste.allainpr@proton.me
+🔗 LinkedIn: https://www.linkedin.com/in/allain-baptiste/
+🐙 GitHub: github.com/baptiste040`,
 };
 
 function appendOutput(text) {
@@ -54,6 +54,10 @@ function handleCommand(cmd) {
 
   if (commands[command]) {
     appendOutput(commands[command]);
+    if (command === "cv") {
+        window.open("assets/cv.pdf", "_blank");
+      }
+      
   } else {
     appendOutput(`Command not found: ${command}
 Type 'help' to see available commands.`);
