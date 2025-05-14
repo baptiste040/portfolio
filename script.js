@@ -57,7 +57,12 @@ const commands = {
 - clear       → clear the terminal
 - contact     → get in touch`,
 
-  about: `Hey there! 👋 I'm Baptiste Allain
+  about: `🎬 Watch my video presentation:
+<div id="video-container" onclick="markVideoWatched()">
+<iframe width="100%" height="250" src="https://www.youtube.com/embed/f1q-optnh2A" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+Hey there! 👋 I'm Baptiste Allain
 
 🚀 First and foremost, I'm passionate about entrepreneurship and building products that solve real problems.
 
@@ -69,8 +74,6 @@ const commands = {
 🛠️ I see technology as a tool to achieve business goals, not just for its own sake. I love the challenge of turning ideas into viable products and testing them in the real market.
 
 🌱 My background combines business thinking with technical skills - a mix I believe is essential for today's entrepreneurial landscape.
-
-🎬 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" onclick="markVideoWatched()">👉 Watch my video presentation</a>
 
 👉 Check out my projects with the "projects" command!`,
 
@@ -184,7 +187,8 @@ function processCommand(command) {
 
   if (command === "about") {
     appendOutput(commands[command]);
-    // Ne pas affecter la quête videoWatched ici - sera fait via le onclick
+    // Appeler handleAboutCommand pour configurer l'événement de clic sur la vidéo
+    setTimeout(handleAboutCommand, 100);
     return;
   }
 
@@ -448,6 +452,17 @@ function markVideoWatched() {
 
 // Make the function available globally
 window.markVideoWatched = markVideoWatched;
+
+// Add event listener for when about command is executed
+function handleAboutCommand() {
+  // Set a timeout to trigger the video watched event when the iframe loads
+  setTimeout(() => {
+    const videoContainer = document.getElementById("video-container");
+    if (videoContainer) {
+      videoContainer.addEventListener("click", markVideoWatched);
+    }
+  }, 500);
+}
 
 // Create neural network visualization
 function createNeuralNetwork() {
