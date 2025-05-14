@@ -452,56 +452,12 @@ window.markVideoWatched = markVideoWatched;
 // Create neural network visualization
 function createNeuralNetwork() {
   const neuralNetwork = document.getElementById("neural-network");
-  const width = neuralNetwork.offsetWidth;
-  const height = neuralNetwork.offsetHeight;
-  const nodeCount = 15;
-  const nodes = [];
 
-  // Create nodes
-  for (let i = 0; i < nodeCount; i++) {
-    const node = document.createElement("div");
-    node.className = "neural-node";
+  // Clear any existing content
+  neuralNetwork.innerHTML = "";
 
-    // Random position
-    const x = Math.random() * width;
-    const y = Math.random() * height;
-
-    node.style.left = `${x}px`;
-    node.style.top = `${y}px`;
-
-    neuralNetwork.appendChild(node);
-    nodes.push({ element: node, x, y });
-  }
-
-  // Create connections between nodes
-  for (let i = 0; i < nodes.length; i++) {
-    const connections = Math.floor(Math.random() * 3) + 1; // 1-3 connections per node
-
-    for (let j = 0; j < connections; j++) {
-      const targetIndex = Math.floor(Math.random() * nodes.length);
-      if (targetIndex !== i) {
-        const connection = document.createElement("div");
-        connection.className = "neural-connection";
-
-        const sourceNode = nodes[i];
-        const targetNode = nodes[targetIndex];
-
-        // Calculate distance and angle
-        const dx = targetNode.x - sourceNode.x;
-        const dy = targetNode.y - sourceNode.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
-
-        // Position and rotate line
-        connection.style.width = `${distance}px`;
-        connection.style.left = `${sourceNode.x}px`;
-        connection.style.top = `${sourceNode.y}px`;
-        connection.style.transform = `rotate(${angle}deg)`;
-
-        neuralNetwork.appendChild(connection);
-      }
-    }
-  }
+  // We're not creating any static neural network visualization anymore
+  // This keeps the element available for synapse effects but removes the static lines
 }
 
 // Create synapse effect
