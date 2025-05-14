@@ -74,23 +74,31 @@ const commands = {
 
 👉 Check out my projects with the "projects" command!`,
 
-  projects: `1. 🧠 Predictive model for student performance (Python, Scikit-Learn)
-2. 📊 Dashboard Airbnb prices (Python + Tableau)
-3. 🤖 Chatbot with Hugging Face
+  projects: `🚀 My Real Projects:
 
-Type 'project 1', 'project 2', etc. to see more.`,
+1. 📰 InsightFlow - AI-powered personalized news aggregator that fights information overload and enables efficient monitoring
+   → <a href="https://www.myinsightflow.com/" target="_blank">Visit InsightFlow</a>
 
-  "project 1": `🧠 Predictive Model:
-Used regression to predict student grades from study habits.
-Libraries: pandas, scikit-learn, matplotlib.`,
+2. 💸 HunterBoard - First gamified affiliate platform that allows anyone to earn money by promoting apps/SaaS/newsletters
+   → <a href="https://www.hunterboard.app/" target="_blank">Visit HunterBoard</a>
 
-  "project 2": `📊 Dashboard Airbnb:
-Scraped and analyzed Airbnb prices in Paris.
-Built a Tableau dashboard to visualize price clusters.`,
+3. 🔧 New Project (In Development) - More details coming soon!
 
-  "project 3": `🤖 Chatbot:
-Created a chatbot using Transformers (Hugging Face).
-Fine-tuned on custom dataset.`,
+Type 'project 1', 'project 2', etc. to see more details.`,
+
+  "project 1": `📰 InsightFlow:
+An algorithm with high personalization capabilities that transforms how people stay informed.
+Fights information overload by filtering and synthesizing content from 100+ sources.
+Delivers essential, personalized news directly to users' inboxes.`,
+
+  "project 2": `💸 HunterBoard:
+The first gamified affiliate platform solving the acquisition problem for digital products.
+Enables anyone to earn money through content creation by promoting apps/SaaS/newsletters.
+Features a mission board system that connects creators with high-commission opportunities.`,
+
+  "project 3": `🔧 New Project (In Development):
+My third major project is currently under construction.
+More details will be revealed soon!`,
 
   cv: `📄 Downloading CV...
 <a href="assets/cv.pdf" target="_blank">👉 Click here to open my CV</a>`,
