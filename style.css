@@ -37,21 +37,148 @@ body::before {
   }
 }
 
-#terminal {
+.brain-container {
+  position: relative;
   width: 90%;
   max-width: 800px;
   height: 90vh;
+  z-index: 10;
+}
+
+.brain-waves {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 136, 0.2) 20%,
+    rgba(0, 255, 136, 0.3) 40%,
+    rgba(0, 255, 136, 0.2) 60%,
+    transparent 80%
+  );
+  opacity: 0;
+  animation: brain-wave 3s ease-in-out infinite;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  filter: blur(1px);
+  z-index: 11;
+}
+
+@keyframes brain-wave {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scaleY(1.5);
+  }
+}
+
+#terminal {
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.8);
-  padding: 1.5em;
+  padding: 0;
   overflow-y: auto;
   border: 2px solid #00ff88;
-  border-radius: 6px;
+  border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 255, 136, 0.5),
     inset 0 0 10px rgba(0, 255, 136, 0.2);
   position: relative;
   z-index: 10;
   scrollbar-width: thin;
   scrollbar-color: #00ff88 #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background: rgba(0, 20, 10, 0.8);
+  border-bottom: 1px solid #00ff88;
+  border-radius: 8px 8px 0 0;
+}
+
+.brain-icon {
+  font-size: 1.5em;
+  color: #00ff88;
+  margin-right: 10px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.7);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(0, 255, 136, 0.9),
+      0 0 20px rgba(0, 255, 136, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.7);
+  }
+}
+
+.header-text {
+  flex-grow: 1;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #00ff88;
+  text-shadow: 0 0 5px rgba(0, 255, 136, 0.7);
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #00ff88;
+  border-radius: 50%;
+  margin-right: 5px;
+  box-shadow: 0 0 5px #00ff88;
+  animation: blink 2s infinite;
+}
+
+.status-text {
+  font-size: 0.8em;
+  color: #00ff88;
+}
+
+#neural-network {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.15;
+}
+
+.neural-node {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #00ff88;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #00ff88;
+}
+
+.neural-connection {
+  position: absolute;
+  height: 1px;
+  background: #00ff88;
+  transform-origin: left center;
+  box-shadow: 0 0 2px #00ff88;
 }
 
 #terminal::-webkit-scrollbar {
@@ -67,9 +194,18 @@ body::before {
   border-radius: 10px;
 }
 
+#output {
+  white-space: pre-wrap;
+  margin: 1.5em;
+  margin-bottom: 0.5em;
+  text-shadow: 0 0 3px rgba(0, 255, 136, 0.3);
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
 .input-line {
   display: flex;
-  margin-top: 5px;
+  margin: 0 1.5em 1em 1.5em;
 }
 
 .prompt {
@@ -91,11 +227,77 @@ input {
   text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
 }
 
-#output {
-  white-space: pre-wrap;
+.synapses {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.synapse {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #00ff88;
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 5px #00ff88;
+  animation: synapse-pulse 1s ease-out forwards;
+}
+
+@keyframes synapse-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(20);
+    opacity: 0;
+  }
+}
+
+.thinking-indicator {
+  display: none;
+  justify-content: center;
   margin-bottom: 1em;
-  text-shadow: 0 0 3px rgba(0, 255, 136, 0.3);
-  line-height: 1.4;
+}
+
+.thinking-indicator.active {
+  display: flex;
+}
+
+.thinking-indicator .dot {
+  width: 8px;
+  height: 8px;
+  background: #00ff88;
+  border-radius: 50%;
+  margin: 0 5px;
+  box-shadow: 0 0 5px #00ff88;
+}
+
+.thinking-indicator .dot:nth-child(1) {
+  animation: thinking 1s infinite 0s;
+}
+
+.thinking-indicator .dot:nth-child(2) {
+  animation: thinking 1s infinite 0.2s;
+}
+
+.thinking-indicator .dot:nth-child(3) {
+  animation: thinking 1s infinite 0.4s;
+}
+
+@keyframes thinking {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 a {
@@ -173,5 +375,25 @@ a:hover {
   }
   50% {
     opacity: 0;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .brain-container {
+    width: 95%;
+    height: 95vh;
+  }
+
+  .terminal-header {
+    padding: 8px 10px;
+  }
+
+  .brain-icon {
+    font-size: 1.2em;
+  }
+
+  .header-text {
+    font-size: 0.9em;
   }
 }

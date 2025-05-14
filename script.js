@@ -53,11 +53,9 @@ const commands = {
 - about       → learn more about me
 - projects    → see my Data/AI projects
 - cv          → download my CV
-- video       → watch my presentation
-- contact     → get in touch
-- quests      → view available quests
-- progress    → check your quest progress
-- clear       → clear the terminal`,
+- quests      → view your quests progress
+- clear       → clear the terminal
+- contact     → get in touch`,
 
   about: `Hey there! 👋 I'm Baptiste Allain
 
@@ -71,6 +69,8 @@ const commands = {
 🛠️ I see technology as a tool to achieve business goals, not just for its own sake. I love the challenge of turning ideas into viable products and testing them in the real market.
 
 🌱 My background combines business thinking with technical skills - a mix I believe is essential for today's entrepreneurial landscape.
+
+🎬 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" onclick="markVideoWatched()">👉 Watch my video presentation</a>
 
 👉 Check out my projects with the "projects" command!`,
 
@@ -103,23 +103,19 @@ More details will be revealed soon!`,
   cv: `📄 Downloading CV...
 <a href="assets/cv.pdf" target="_blank">👉 Click here to open my CV</a>`,
 
-  video: `🎬 Opening video presentation...
-<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">👉 Click here to watch my video</a>`,
+  quests: function () {
+    return `Quests:
+${quests.projectViewed ? "✅" : "❌"} View a project (type 'projects')
+${quests.videoWatched ? "✅" : "❌"} Watch my video (in 'about' section)
+${quests.easterEggFound ? "✅" : "❌"} Find the secret command${
+      quests.easterEggFound ? " (secrets unlocked!)" : ""
+    }`;
+  },
 
   contact: `📧 Email: baptiste.allainpr@proton.me
 📱 Téléphone: 06 43 60 07 14
 🔗 LinkedIn: https://www.linkedin.com/in/allain-baptiste/
 🐙 GitHub: github.com/baptiste040`,
-
-  quests: `Available Quests:
-- [quest 1] View a project
-- [quest 2] Watch my video
-- [quest 3] Find the secret command
-Type 'progress' to see your completion status.`,
-
-  progress: function () {
-    return getProgressText();
-  },
 
   "sudo hire-me": `💼 Hiring protocol initiated...
 🎯 You've unlocked the secret command.
@@ -133,19 +129,10 @@ Congratulations, you've just recruited a motivated badass.`,
 
 const secretCommands = {
   secrets: `🔓 Secret commands unlocked:
-- athlete    → check my athletics profile
-- music      → discover my favorite song
-- movie      → find out my favorite movie/actor`,
+- athlete    → check my athletics profile`,
 
   athlete: `🏃‍♂️ My athletics profile:
 <a href="https://bases.athle.fr/asp.net/athletes.aspx?base=records&seq=50495049445551484752445544555148" target="_blank">👉 Click here to see my athletics records</a>`,
-
-  music: `🎵 My favorite song:
-<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">👉 Click here to listen</a>`,
-
-  movie: `🎬 My favorite movie:
-Inception - I love how it blends mind-bending concepts with emotional storytelling.
-Favorite actor: Leonardo DiCaprio - His performances in Inception and The Departed are outstanding.`,
 };
 
 function appendOutput(text) {
@@ -157,11 +144,35 @@ function handleCommand(cmd) {
   const command = cmd.trim().toLowerCase();
   appendOutput(`> ${command}`);
 
+  // Create synapse effect on command
+  createSynapse();
+
   if (command === "clear") {
     output.innerHTML = "";
     return;
   }
 
+  // Show thinking indicator for complex commands
+  if (command !== "clear" && command !== "") {
+    showThinking(true);
+
+    // Simulate "thinking" with random synapses
+    const synapseCount = Math.floor(Math.random() * 3) + 2;
+    for (let i = 0; i < synapseCount; i++) {
+      setTimeout(() => createSynapse(), i * 200);
+    }
+
+    // Process command after "thinking"
+    setTimeout(() => {
+      showThinking(false);
+      processCommand(command);
+    }, 600);
+  } else {
+    processCommand(command);
+  }
+}
+
+function processCommand(command) {
   // Traitement spécial pour certaines commandes
   if (command === "projects") {
     appendOutput(commands[command]);
@@ -173,10 +184,7 @@ function handleCommand(cmd) {
 
   if (command === "about") {
     appendOutput(commands[command]);
-    // Ne pas affecter la quête videoWatched ici
-    appendOutput(
-      "💡 Hint: Try watching the video presentation to unlock more hints!"
-    );
+    // Ne pas affecter la quête videoWatched ici - sera fait via le onclick
     return;
   }
 
@@ -220,17 +228,6 @@ function handleCommand(cmd) {
       saveProgress();
     }
 
-    if (command === "video") {
-      quests.videoWatched = true;
-      saveProgress();
-      // Ajouter un indice après avoir regardé la vidéo
-      setTimeout(() => {
-        appendOutput(
-          "💡 Hint unlocked: It's something you'd want to say to a recruiter..."
-        );
-      }, 1000);
-    }
-
     if (command === "sudo hire-me") {
       quests.easterEggFound = true;
       saveProgress();
@@ -245,6 +242,11 @@ function handleCommand(cmd) {
         document.body.style.backgroundColor = "";
         terminal.classList.remove("glitch");
       }, 400);
+
+      // More intense synapse effect for easter egg
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => createSynapse(), i * 100);
+      }
 
       // Notification de déblocage des secrets
       setTimeout(() => {
@@ -272,6 +274,7 @@ window.onload = function () {
 
   loadProgress();
   initParticles();
+  createNeuralNetwork();
   bootTerminal();
 };
 
@@ -430,11 +433,104 @@ async function bootTerminal() {
   cursor.style.display = "inline-block";
 }
 
-function getProgressText() {
-  return `Progress:
-${quests.projectViewed ? "✅" : "❌"} Quest 1 - Project viewed
-${quests.videoWatched ? "✅" : "❌"} Quest 2 - Video watched
-${quests.easterEggFound ? "✅" : "❌"} Quest 3 - Secret found${
-    quests.easterEggFound ? " (secrets unlocked!)" : ""
-  }`;
+// Function to mark video as watched when clicking the link
+function markVideoWatched() {
+  quests.videoWatched = true;
+  saveProgress();
+
+  // Add hint after a short delay
+  setTimeout(() => {
+    appendOutput(
+      "💡 Hint unlocked: It's something you'd want to say to a recruiter..."
+    );
+  }, 1000);
+}
+
+// Make the function available globally
+window.markVideoWatched = markVideoWatched;
+
+// Create neural network visualization
+function createNeuralNetwork() {
+  const neuralNetwork = document.getElementById("neural-network");
+  const width = neuralNetwork.offsetWidth;
+  const height = neuralNetwork.offsetHeight;
+  const nodeCount = 15;
+  const nodes = [];
+
+  // Create nodes
+  for (let i = 0; i < nodeCount; i++) {
+    const node = document.createElement("div");
+    node.className = "neural-node";
+
+    // Random position
+    const x = Math.random() * width;
+    const y = Math.random() * height;
+
+    node.style.left = `${x}px`;
+    node.style.top = `${y}px`;
+
+    neuralNetwork.appendChild(node);
+    nodes.push({ element: node, x, y });
+  }
+
+  // Create connections between nodes
+  for (let i = 0; i < nodes.length; i++) {
+    const connections = Math.floor(Math.random() * 3) + 1; // 1-3 connections per node
+
+    for (let j = 0; j < connections; j++) {
+      const targetIndex = Math.floor(Math.random() * nodes.length);
+      if (targetIndex !== i) {
+        const connection = document.createElement("div");
+        connection.className = "neural-connection";
+
+        const sourceNode = nodes[i];
+        const targetNode = nodes[targetIndex];
+
+        // Calculate distance and angle
+        const dx = targetNode.x - sourceNode.x;
+        const dy = targetNode.y - sourceNode.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+
+        // Position and rotate line
+        connection.style.width = `${distance}px`;
+        connection.style.left = `${sourceNode.x}px`;
+        connection.style.top = `${sourceNode.y}px`;
+        connection.style.transform = `rotate(${angle}deg)`;
+
+        neuralNetwork.appendChild(connection);
+      }
+    }
+  }
+}
+
+// Create synapse effect
+function createSynapse() {
+  const synapses = document.querySelector(".synapses");
+  const synapse = document.createElement("div");
+  synapse.className = "synapse";
+
+  // Random position
+  const x = Math.random() * synapses.offsetWidth;
+  const y = Math.random() * synapses.offsetHeight;
+
+  synapse.style.left = `${x}px`;
+  synapse.style.top = `${y}px`;
+
+  synapses.appendChild(synapse);
+
+  // Remove after animation completes
+  setTimeout(() => {
+    synapse.remove();
+  }, 1000);
+}
+
+// Show thinking indicator
+function showThinking(show = true) {
+  const thinking = document.querySelector(".thinking-indicator");
+  if (show) {
+    thinking.classList.add("active");
+  } else {
+    thinking.classList.remove("active");
+  }
 }

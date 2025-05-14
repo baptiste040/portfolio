@@ -3,17 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Baptiste Allain - Terminal Portfolio</title>
+    <title>Baptiste Allain - Brain Terminal</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
   </head>
   <body>
     <div id="particles-js"></div>
-    <div id="terminal">
-      <div id="output"></div>
-      <div class="input-line">
-        <span class="prompt">></span>
-        <input type="text" id="commandInput" autofocus />
-        <span class="cursor"></span>
+    <div class="brain-container">
+      <div class="brain-waves"></div>
+      <div id="terminal">
+        <div class="terminal-header">
+          <div class="brain-icon"><i class="fas fa-brain"></i></div>
+          <div class="header-text">Baptiste's Brain Terminal</div>
+          <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span class="status-text">Online</span>
+          </div>
+        </div>
+        <div id="neural-network"></div>
+        <div id="output"></div>
+        <div class="input-line">
+          <span class="prompt">></span>
+          <input type="text" id="commandInput" autofocus />
+          <span class="cursor"></span>
+        </div>
+        <div class="synapses"></div>
+        <div class="thinking-indicator">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
       </div>
     </div>
     <!-- Particles.js -->
